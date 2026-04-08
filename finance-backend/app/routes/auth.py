@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException
 from app.db.database import SessionLocal
 from app.db.models import User
 from app.schemas.user import UserCreate
-from app.core.security import hash_password
+from app.core.security import hash_password, verify_password, create_access_token
 from fastapi import Depends
-from app.core.security import verify_password, create_access_token
+
 
 router = APIRouter(tags=["Auth"])
 
