@@ -2,13 +2,16 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import func
 from app.db.database import SessionLocal
 from app.db.models import Transaction
+from sqlalchemy.orm import Session
 from app.dependencies.roles import authorize
+from app.dependencies.db import get_db
 
 router = APIRouter(tags=["Analytics"])
 
 
 @router.get("/analytics/summary")
 def get_summary(
+    db: Session = Depends(get_db),
     user = Depends(authorize(["admin", "analyst"]))
 ):
     db = SessionLocal()
@@ -27,6 +30,7 @@ def get_summary(
     
 @router.get("/analytics/category")
 def category_breakdown(
+    db: Session = Depends(get_db),
     user = Depends(authorize(["admin", "analyst"]))
 ):
     db = SessionLocal()
@@ -40,6 +44,7 @@ def category_breakdown(
 
 @router.get("/analytics/recent")
 def recent_transactions(
+    db: Session = Depends(get_db),
     user = Depends(authorize(["admin", "analyst", "viewer"]))
 ):
     db = SessionLocal()
@@ -51,6 +56,7 @@ def recent_transactions(
         
 @router.get("/analytics/monthly")
 def monthly_trends(
+    db: Session = Depends(get_db),
     user = Depends(authorize(["admin", "analyst"]))
 ):
     db = SessionLocal()
